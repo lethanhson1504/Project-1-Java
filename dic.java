@@ -1,14 +1,32 @@
 import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;  
+import java.util.Scanner;
 
 public class dic {
+    HashMap<String, String> dict_1;
     public static void main(String[] args){
-        HashMap<String, String> dictionary = new HashMap<>();
-        dictionary.put("Hardware", "Pc");
-        dictionary.put("Software", "Pm");
-        dictionary.put("College", "T D H");
-        dictionary.put("Programer", "L T V");
-        dictionary.put("Compile", "B D");
-        dictionary.put("Error", "L");
-        System.out.println(dictionary.get("Compile"));
+        dic dictionary = new dic();
+        dictionary.readFile("slang.txt");
+        //System.out.println(dictionary.dict_1);
+        System.out.println(dictionary.dict_1.get("^W^"));
+    }
+    public dic (){
+        dict_1 = new HashMap<String, String>();
+    }
+    public void readFile(String fileName){
+        try{
+            File myfile = new File(fileName);
+            Scanner myReader = new Scanner(myfile);
+            while(myReader.hasNextLine()){
+                String data = myReader.nextLine();
+                String[] temp = data.split("`", 2);
+                this.dict_1.put(temp[0], temp[1]);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+            e.printStackTrace();
+        }
     }
 }
