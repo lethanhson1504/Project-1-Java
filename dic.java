@@ -8,7 +8,19 @@ public class dic {
     public static void main(String[] args){
         dic dictionary = new dic();
         dictionary.readFile("slang.txt");
-        //System.out.println(dictionary.dict_1);
+        int cont = 1;
+        do{
+            System.out.println("Chon chuc nang: ");          
+            System.out.println("1. Tim kiem theo slang word: ");
+            System.out.println("2. Tim kiem theo definition, hien thi ra cac slang words trong definition co chua keyword go vao: ");
+            System.out.println("3. Danh sach cac tu da tim kiem: ");
+            System.out.println("4. Add slang word. ");
+            Scanner input = new Scanner(System.in);
+            int n = input.nextInt();
+
+            System.out.println("Ban co muon tiep tuc khong: ");
+            cont = input.nextInt();
+        } while (cont == 1);
         System.out.println(dictionary.dict_1.get("^W^"));
     }
     public dic (){
