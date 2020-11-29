@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.File;
 import java.io.FileNotFoundException;  
@@ -5,10 +6,11 @@ import java.util.Scanner;
 
 public class dic {
     HashMap<String, String> dict_1;
+    ArrayList<String> history;
     public static void main(String[] args){
         dic dictionary = new dic();
         dictionary.readFile("slang.txt");
-        
+
         boolean conti;
         do{
             int select = dictionary.menu();
@@ -18,6 +20,7 @@ public class dic {
     }
     public dic (){
         dict_1 = new HashMap<String, String>();
+        history = new ArrayList<String>();
     }
     public void readFile(String fileName){
         try{
@@ -44,7 +47,7 @@ public class dic {
         int option;
         Scanner input = new Scanner(System.in);
         do {
-            System.out.print("Nhap lua chon: ");
+            System.out.print("Nhap lua chon: "); 
             option = input.nextInt();
         } while(option < 1 || option > 10);
         return option;
@@ -53,13 +56,17 @@ public class dic {
     public boolean options(dic d, int select){
         switch(select) {
             case 1:
-                d.findSlang(d);
+                String s = d.findSlang(d);
+                if(s != null)
+                    d.SaveHistory(s);
                 break;
             case 2:
               // code block
               break;
             case 3:
-              // code block
+                for (int i = 0; i < d.history.size(); i++){
+                    System.out.println(d.history.get(i));
+                }
               break;
             case 4:
               // code block
@@ -103,9 +110,15 @@ public class dic {
         String meaning = d.dict_1.get(slang);
         if (meaning != null){
             System.out.println(meaning);
-            return meaning;
+            return slang + ": " + meaning;
         }
         else System.out.println("Khong co slang word nay");
         return null;
     }
+
+    public void SaveHistory(String s){
+        this.history.add(s);
+    }
+
+
 }
