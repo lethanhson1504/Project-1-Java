@@ -8,20 +8,13 @@ public class dic {
     public static void main(String[] args){
         dic dictionary = new dic();
         dictionary.readFile("slang.txt");
-        int cont = 1;
-        do{
-            System.out.println("Chon chuc nang: ");          
-            System.out.println("1. Tim kiem theo slang word: ");
-            System.out.println("2. Tim kiem theo definition, hien thi ra cac slang words trong definition co chua keyword go vao: ");
-            System.out.println("3. Danh sach cac tu da tim kiem: ");
-            System.out.println("4. Add slang word. ");
-            Scanner input = new Scanner(System.in);
-            int select = input.nextInt();
-            dictionary.findSlang(dictionary);
-            System.out.println("Ban co muon tiep tuc khong: ");
-            cont = input.nextInt();
-        } while (cont == 1);
         
+        boolean conti;
+        do{
+            int select = dictionary.menu();
+            conti = dictionary.options(dictionary, select);
+        } while (conti);
+
     }
     public dic (){
         dict_1 = new HashMap<String, String>();
@@ -41,14 +34,78 @@ public class dic {
             e.printStackTrace();
         }
     }
+    
+    public int menu(){
+        System.out.println("Chon chuc nang.");          
+        System.out.println("1. Tim kiem theo slang word.");
+        System.out.println("2. Tim kiem theo definition, hien thi ra cac slang words trong definition co chua keyword go vao.");
+        System.out.println("3. Danh sach cac tu da tim kiem.");
+        System.out.println("4. Add slang word.");
+        int option;
+        Scanner input = new Scanner(System.in);
+        do {
+            System.out.print("Nhap lua chon: ");
+            option = input.nextInt();
+        } while(option < 1 || option > 10);
+        return option;
+    }
 
-    public void findSlang(dic d){
+    public boolean options(dic d, int select){
+        switch(select) {
+            case 1:
+                d.findSlang(d);
+                break;
+            case 2:
+              // code block
+              break;
+            case 3:
+              // code block
+              break;
+            case 4:
+              // code block
+              break;
+            case 5:
+              // code block
+              break;
+            case 6:
+              // code block
+              break;
+            case 7:
+              // code block
+              break;
+            case 8:
+              // code block
+              break;
+            case 9:
+              // code block
+              break;
+            case 10:
+              // code block
+              break;
+        }
+        int cont;
+        Scanner input = new Scanner(System.in);
+        
+        do {
+            System.out.print("Ban co muon tiep tuc khong(1: Co, 0: Khong): ");
+            cont = input.nextInt();
+        } while(cont != 0 && cont != 1);
+        
+        if (cont == 1)
+            return true;
+        else return false;
+    }
+
+    public String findSlang(dic d){
         System.out.print("Nhap slang word can tim: ");
         Scanner input = new Scanner(System.in);
         String slang = input.nextLine();
         String meaning = d.dict_1.get(slang);
-        if (meaning != null)
+        if (meaning != null){
             System.out.println(meaning);
+            return meaning;
+        }
         else System.out.println("Khong co slang word nay");
+        return null;
     }
 }
