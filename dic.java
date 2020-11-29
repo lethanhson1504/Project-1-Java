@@ -41,12 +41,14 @@ public class dic {
     }
     
     public int menu(){
-        System.out.println("Chon chuc nang.");          
+        System.out.println("Chon chuc nang: ");          
         System.out.println("1. Tim kiem theo slang word.");
         System.out.println("2. Tim kiem theo definition, hien thi ra cac slang words trong definition co chua keyword go vao.");
         System.out.println("3. Danh sach cac tu da tim kiem.");
         System.out.println("4. Add slang word.");
         System.out.println("5. Edit slang word.");
+        System.out.println("6. Delete slang word.");
+        System.out.println("7. Reset ve danh sach goc.");
         int option;
         Scanner input = new Scanner(System.in);
         do {
@@ -80,8 +82,8 @@ public class dic {
                 d.editSlang();
               break;
             case 6:
-              // code block
-              break;
+                d.deleteSlang();
+                break;
             case 7:
               // code block
               break;
@@ -152,7 +154,8 @@ public class dic {
                     this.dict_1.remove(slang);
 
                     this.updateFileSlang();
-                    
+
+                    System.out.println("Da cap nhat danh sach slang word!");
                     break;
                 case 1:
                     System.out.print("Nhap nghia moi: "); 
@@ -161,6 +164,7 @@ public class dic {
                     this.dict_1.put(slang, new_meaning);
 
                     this.updateFileSlang();
+                    System.out.println("Da cap nhat danh sach slang word!");
                     break;
                 case 2:
                     System.out.print("Nhap slang word moi: "); 
@@ -175,6 +179,7 @@ public class dic {
 
                     this.updateFileSlang();
 
+                    System.out.println("Da cap nhat danh sach slang word!");
                     break;
             }
         }
@@ -192,6 +197,32 @@ public class dic {
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+        }
+    }
+
+
+    public void deleteSlang(){
+        System.out.print("Nhap slang word can xoa: ");
+        String slang = this.findSlang(this);
+
+        if (slang != null){
+            System.out.print("Ban co chac muon xoa slang word nay? (0: Khong, 1: Co): ");
+            
+            int option;
+            Scanner input = new Scanner(System.in);
+
+            do {
+                System.out.print("Nhap lua chon: "); 
+                option = input.nextInt();
+            } while(option < 0 || option > 1);
+
+            input.nextLine();
+            if (option == 1) {
+                this.dict_1.remove(slang);
+                System.out.println("Da xoa"); 
+                this.updateFileSlang();
+            }
+            else System.out.println("Da huy"); 
         }
     }
 
