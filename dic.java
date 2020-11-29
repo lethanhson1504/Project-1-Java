@@ -16,12 +16,12 @@ public class dic {
             System.out.println("3. Danh sach cac tu da tim kiem: ");
             System.out.println("4. Add slang word. ");
             Scanner input = new Scanner(System.in);
-            int n = input.nextInt();
-
+            int select = input.nextInt();
+            dictionary.findSlang(dictionary);
             System.out.println("Ban co muon tiep tuc khong: ");
             cont = input.nextInt();
         } while (cont == 1);
-        System.out.println(dictionary.dict_1.get("^W^"));
+        
     }
     public dic (){
         dict_1 = new HashMap<String, String>();
@@ -40,5 +40,15 @@ public class dic {
             System.out.println("File not found!");
             e.printStackTrace();
         }
+    }
+
+    public void findSlang(dic d){
+        System.out.print("Nhap slang word can tim: ");
+        Scanner input = new Scanner(System.in);
+        String slang = input.nextLine();
+        String meaning = d.dict_1.get(slang);
+        if (meaning != null)
+            System.out.println(meaning);
+        else System.out.println("Khong co slang word nay");
     }
 }
