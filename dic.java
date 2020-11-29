@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.io.File;
 import java.io.FileNotFoundException;  
 import java.util.Scanner;
+import java.io.FileWriter;  
+import java.io.IOException;
 
 public class dic {
     HashMap<String, String> dict_1;
@@ -44,6 +46,7 @@ public class dic {
         System.out.println("2. Tim kiem theo definition, hien thi ra cac slang words trong definition co chua keyword go vao.");
         System.out.println("3. Danh sach cac tu da tim kiem.");
         System.out.println("4. Add slang word.");
+        System.out.println("5. Edit slang word.");
         int option;
         Scanner input = new Scanner(System.in);
         do {
@@ -56,6 +59,7 @@ public class dic {
     public boolean options(dic d, int select){
         switch(select) {
             case 1:
+                System.out.print("Nhap slang word can tim: ");
                 String s = d.findSlang(d);
                 if(s != null)
                     d.SaveHistory(s);
@@ -64,6 +68,7 @@ public class dic {
               // code block
               break;
             case 3:
+                System.out.println("Danh sach cac tu da tim kiem: ");
                 for (int i = 0; i < d.history.size(); i++){
                     System.out.println(d.history.get(i));
                 }
@@ -72,7 +77,7 @@ public class dic {
               // code block
               break;
             case 5:
-              // code block
+                d.editSlang();
               break;
             case 6:
               // code block
@@ -104,21 +109,90 @@ public class dic {
     }
 
     public String findSlang(dic d){
-        System.out.print("Nhap slang word can tim: ");
         Scanner input = new Scanner(System.in);
         String slang = input.nextLine();
         String meaning = d.dict_1.get(slang);
         if (meaning != null){
             System.out.println(meaning);
-            return slang + ": " + meaning;
+            return slang;
         }
         else System.out.println("Khong co slang word nay");
         return null;
     }
 
     public void SaveHistory(String s){
-        this.history.add(s);
+        if (!this.history.contains(s))
+            this.history.add(s);
     }
 
+
+    public void editSlang(){
+        System.out.print("Nhap slang word can edit: ");
+        String slang = this.findSlang(this);
+        if (slang != null){
+
+            int option;
+            Scanner input = new Scanner(System.in);
+            System.out.println("Ban muon edit slang, nghia, hay ca hai ?(0: slang, 1: nghia, 2: ca hai): ");
+            do {
+                System.out.print("Nhap lua chon: "); 
+                option = input.nextInt();
+            } while(option < 0 || option > 2);
+
+            input.nextLine();
+
+            switch(option) {
+                case 0:
+                    System.out.print("Nhap slang word moi: "); 
+
+                    String new_Slang = input.nextLine();
+
+                    this.dict_1.put(new_Slang, this.dict_1.get(slang));
+
+                    this.dict_1.remove(slang);
+
+                    this.updateFileSlang();
+                    
+                    break;
+                case 1:
+                    System.out.print("Nhap nghia moi: "); 
+                    String new_meaning = input.nextLine();
+
+                    this.dict_1.put(slang, new_meaning);
+
+                    this.updateFileSlang();
+                    break;
+                case 2:
+                    System.out.print("Nhap slang word moi: "); 
+                    new_Slang = input.nextLine();
+
+                    System.out.print("Nhap nghia moi: "); 
+                    new_meaning = input.nextLine();
+
+                    this.dict_1.put(new_Slang, new_meaning);
+
+                    this.dict_1.remove(slang);
+
+                    this.updateFileSlang();
+
+                    break;
+            }
+        }
+    }
+
+    public void updateFileSlang(){
+        try {
+            FileWriter myWriter = new FileWriter("slang.txt");
+
+            for (String i : this.dict_1.keySet()) {
+                myWriter.write(i + "`" + this.dict_1.get(i) + "\n");
+            }
+
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 
 }
