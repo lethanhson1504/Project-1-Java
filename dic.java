@@ -85,8 +85,9 @@ public class dic {
                 d.deleteSlang();
                 break;
             case 7:
-              // code block
-              break;
+                this.resetSlang();
+                //this.readFile("slang.txt");
+                break;
             case 8:
               // code block
               break;
@@ -224,6 +225,16 @@ public class dic {
             }
             else System.out.println("Da huy"); 
         }
+    }
+
+    public void resetSlang(){
+        this.dict_1.clear();
+
+        this.readFile("slang_original.txt");
+
+        this.updateFileSlang();
+
+        System.out.println("Da reset ve danh sach ban dau!");
     }
 
 }
