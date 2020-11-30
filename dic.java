@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.FileWriter;  
 import java.io.IOException;
+import java.util.Random;
 
 public class dic {
     HashMap<String, String> dict_1;
@@ -49,6 +50,7 @@ public class dic {
         System.out.println("5. Edit slang word.");
         System.out.println("6. Delete slang word.");
         System.out.println("7. Reset ve danh sach goc.");
+        System.out.println("8. Random 1 slang word.");
         int option;
         Scanner input = new Scanner(System.in);
         do {
@@ -86,11 +88,10 @@ public class dic {
                 break;
             case 7:
                 this.resetSlang();
-                //this.readFile("slang.txt");
                 break;
             case 8:
-              // code block
-              break;
+                d.randomSlang();
+                break;
             case 9:
               // code block
               break;
@@ -237,4 +238,18 @@ public class dic {
         System.out.println("Da reset ve danh sach ban dau!");
     }
 
+
+    public void randomSlang(){
+        Random generator = new Random();
+
+        ArrayList<String> random_List = new ArrayList<String>();
+
+        for (String i : this.dict_1.keySet()) {
+            random_List.add(i + ": " + this.dict_1.get(i));
+        }
+
+        Object randomValue = random_List.get(generator.nextInt(random_List.size()));
+
+        System.out.println(randomValue);
+    }
 }
