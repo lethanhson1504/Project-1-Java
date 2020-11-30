@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.io.FileWriter;  
 import java.io.IOException;
 import java.util.Random;
+import java.util.Collections;
 
 public class dic {
     HashMap<String, String> dict_1;
@@ -51,6 +52,8 @@ public class dic {
         System.out.println("6. Delete slang word.");
         System.out.println("7. Reset ve danh sach goc.");
         System.out.println("8. Random 1 slang word.");
+        System.out.println("9. Do vui theo slang word.");
+        System.out.println("10. Do vui theo meaning.");
         int option;
         Scanner input = new Scanner(System.in);
         do {
@@ -93,11 +96,11 @@ public class dic {
                 d.randomSlang();
                 break;
             case 9:
-              // code block
-              break;
+                d.challenge_1(9);
+                break;
             case 10:
-              // code block
-              break;
+                d.challenge_1(10);
+                break;
         }
         int cont;
         Scanner input = new Scanner(System.in);
@@ -251,5 +254,62 @@ public class dic {
         Object randomValue = random_List.get(generator.nextInt(random_List.size()));
 
         System.out.println(randomValue);
+    }
+
+    public void challenge_1(int n){
+        Random generator = new Random();
+
+        ArrayList<String> random_List = new ArrayList<String>();
+
+        for (String i : this.dict_1.keySet()) {
+            random_List.add(i + ": " + this.dict_1.get(i));
+        }
+
+        Object randomValue = random_List.get(generator.nextInt(random_List.size()));
+
+        String[] slang = randomValue.toString().split(": ", 2);
+
+        ArrayList<String> answer_List = new ArrayList<String>();
+
+        String key = slang[0];
+        String value = slang[1];        
+
+        if(n == 10){
+            n = 8;
+            String temp = key;
+            key = value;
+            value = temp;
+        }
+        answer_List.add(value);
+
+        for(int i = 1; i < 4; i++){
+            do{
+                randomValue = random_List.get(generator.nextInt(random_List.size()));
+                slang = randomValue.toString().split(": ", 2);
+            }
+            while(answer_List.contains(slang[n - 8]));
+            answer_List.add(slang[n - 8]);
+        }
+
+        Collections.shuffle(answer_List);  
+
+        if (n == 8)
+            System.out.println("Meaning: " + key);
+        else System.out.println("Slang: " + key);
+
+        for(int i = 0; i < answer_List.size(); i++)
+            System.out.println(i + 1 + ". " + answer_List.get(i));
+
+        System.out.print("Nhap dap an: ");
+        
+        int option;
+        Scanner input = new Scanner(System.in);
+        do {
+            option = input.nextInt();
+        } while(option < 1 || option > 4);
+        
+        if (answer_List.get(option - 1) == value)
+            System.out.println("Chuc mung. Ban qua gioi! :D");
+        else System.out.println("Thu lai nhe :((. Dap an la: " + value);
     }
 }
