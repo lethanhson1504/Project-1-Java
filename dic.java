@@ -16,6 +16,7 @@ public class dic {
         do{
             int select = dictionary.menu();
             conti = dictionary.options(dictionary, select);
+            dictionary.clearScreen();
         } while (conti);
 
     }
@@ -42,7 +43,7 @@ public class dic {
     public int menu(){
         System.out.println("Chon chuc nang: ");          
         System.out.println("1. Tim kiem theo slang word.");
-        System.out.println("2. Tim kiem theo definition, hien thi ra cac slang words trong definition co chua keyword go vao.");
+        System.out.println("2. Tim kiem theo definition.");
         System.out.println("3. Danh sach cac tu da tim kiem.");
         System.out.println("4. Add slang word.");
         System.out.println("5. Edit slang word.");
@@ -63,39 +64,48 @@ public class dic {
     public boolean options(dic d, int select){
         switch(select) {
             case 1:
+                d.clearScreen();
                 System.out.print("Nhap slang word can tim: ");
                 String s = d.findSlang(d);
                 if(s != null)
                     d.SaveHistory(s);
+                    
                 break;
             case 2:
+                d.clearScreen();
                 d.search_Definition();
                 break;
             case 3:
+                d.clearScreen();
                 System.out.println("Danh sach cac tu da tim kiem: ");
                 for (int i = 0; i < d.history.size(); i++){
                     System.out.println(d.history.get(i));
                 }
               break;
             case 4:
-              // code block
-              break;
+                break;
             case 5:
+                d.clearScreen();
                 d.editSlang();
               break;
             case 6:
+                d.clearScreen();
                 d.deleteSlang();
                 break;
             case 7:
+                d.clearScreen();
                 this.resetSlang();
                 break;
             case 8:
+                d.clearScreen();
                 d.randomSlang();
                 break;
             case 9:
+                d.clearScreen();
                 d.challenge_1(9);
                 break;
             case 10:
+                d.clearScreen();
                 d.challenge_1(10);
                 break;
         }
@@ -114,7 +124,7 @@ public class dic {
 
     public String findSlang(dic d){
         Scanner input = new Scanner(System.in);
-        String slang = input.nextLine();
+        String slang = input.nextLine().toLowerCase();
         String meaning = d.dict_1.get(slang);
         if (meaning != null){
             System.out.println(meaning);
@@ -126,7 +136,7 @@ public class dic {
 
     public void SaveHistory(String s){
         if (!this.history.contains(s))
-            this.history.add(s);
+            this.history.add(s.toUpperCase());
     }
 
 
@@ -202,6 +212,21 @@ public class dic {
         }
     }
 
+    public void updateFileSlang2(){
+        try {
+            FileWriter myWriter = new FileWriter("slang_test.txt");
+
+            for (String i : this.dict_1.keySet()) {
+                myWriter.write(i.toLowerCase() + "`" + this.dict_1.get(i).toLowerCase() + "\n");
+            }
+
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
 
     public void deleteSlang(){
         System.out.print("Nhap slang word can xoa: ");
@@ -248,9 +273,9 @@ public class dic {
             random_List.add(i + ": " + this.dict_1.get(i));
         }
 
-        Object randomValue = random_List.get(generator.nextInt(random_List.size()));
+        String randomValue = random_List.get(generator.nextInt(random_List.size()));
 
-        System.out.println(randomValue);
+        System.out.println(randomValue.toUpperCase());
     }
 
     public void challenge_1(int n){
@@ -268,8 +293,8 @@ public class dic {
 
         ArrayList<String> answer_List = new ArrayList<String>();
 
-        String key = slang[0];
-        String value = slang[1];        
+        String key = slang[0].toUpperCase();
+        String value = slang[1].toUpperCase();        
 
         if(n == 10){
             n = 8;
@@ -295,7 +320,7 @@ public class dic {
         else System.out.println("Slang: " + key);
 
         for(int i = 0; i < answer_List.size(); i++)
-            System.out.println(i + 1 + ". " + answer_List.get(i));
+            System.out.println(i + 1 + ". " + answer_List.get(i).toUpperCase());
 
         System.out.print("Nhap dap an: ");
         
@@ -314,11 +339,11 @@ public class dic {
 
         Scanner input = new Scanner(System.in);
         System.out.print("Nhap meaning can tim: "); 
-        String meaning = input.nextLine();
+        String meaning = input.nextLine().toLowerCase();
 
         boolean exist = false;
 
-        System.out.println("Cac slang word co chua " + meaning +": "); 
+        System.out.println("Cac slang word meaning co chua " + meaning +": "); 
 
         for (Map.Entry mapElement : this.dict_1.entrySet()) { 
             String key = (String)mapElement.getKey(); 
@@ -326,7 +351,7 @@ public class dic {
 
             if(value.contains(meaning)) {
                 exist = true;
-                System.out.println(key); 
+                System.out.println(key.toUpperCase()); 
             }
         }
 
@@ -334,5 +359,14 @@ public class dic {
             System.out.println("Khong co slang word nao!"); 
         }
 
+    }
+
+    public void clearScreen(){
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (IOException | InterruptedException ex) {}
     }
 }
