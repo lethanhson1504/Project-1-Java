@@ -1,12 +1,9 @@
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.io.File;
 import java.io.FileNotFoundException;  
 import java.util.Scanner;
 import java.io.FileWriter;  
 import java.io.IOException;
-import java.util.Random;
-import java.util.Collections;
+import java.util.*; 
 
 public class dic {
     HashMap<String, String> dict_1;
@@ -72,8 +69,8 @@ public class dic {
                     d.SaveHistory(s);
                 break;
             case 2:
-              // code block
-              break;
+                d.search_Definition();
+                break;
             case 3:
                 System.out.println("Danh sach cac tu da tim kiem: ");
                 for (int i = 0; i < d.history.size(); i++){
@@ -311,5 +308,31 @@ public class dic {
         if (answer_List.get(option - 1) == value)
             System.out.println("Chuc mung. Ban qua gioi! :D");
         else System.out.println("Thu lai nhe :((. Dap an la: " + value);
+    }
+
+    public void search_Definition(){
+
+        Scanner input = new Scanner(System.in);
+        System.out.print("Nhap meaning can tim: "); 
+        String meaning = input.nextLine();
+
+        boolean exist = false;
+
+        System.out.println("Cac slang word co chua " + meaning +": "); 
+
+        for (Map.Entry mapElement : this.dict_1.entrySet()) { 
+            String key = (String)mapElement.getKey(); 
+            String value = (String)mapElement.getValue(); 
+
+            if(value.contains(meaning)) {
+                exist = true;
+                System.out.println(key); 
+            }
+        }
+
+        if (exist == false){
+            System.out.println("Khong co slang word nao!"); 
+        }
+
     }
 }
