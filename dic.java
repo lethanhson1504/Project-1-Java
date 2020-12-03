@@ -2,29 +2,37 @@ import java.io.File;
 import java.io.FileNotFoundException;  
 import java.util.Scanner;
 import java.io.FileWriter;  
-import java.io.IOException;
+import java.io.*;
 import java.util.*; 
 
 public class dic {
-    HashMap<String, String> dict_1;
-    ArrayList<String> history;
+    HashMap<String, String> dict_1; // tu dien su dung hashmap
+    ArrayList<String> history; //array list luu lich su slang word da tim kiem
     public static void main(String[] args){
         dic dictionary = new dic();
-        dictionary.readFile("slang.txt");
+        dictionary.readData("slang.txt");
 
         boolean conti;
+
+        dictionary.clearScreen();
+
         do{
+            System.out.println("-----SLANG WORD-----");
             int select = dictionary.menu();
             conti = dictionary.options(dictionary, select);
             dictionary.clearScreen();
         } while (conti);
 
     }
+
+    //constructor
     public dic (){
         dict_1 = new HashMap<String, String>();
         history = new ArrayList<String>();
     }
-    public void readFile(String fileName){
+
+    //khoi tao du lieu tu dien ban dau
+    public void readData(String fileName){
         try{
             File myfile = new File(fileName);
             Scanner myReader = new Scanner(myfile);
@@ -40,6 +48,8 @@ public class dic {
         }
     }
     
+
+    //lua chon chuc nang
     public int menu(){
         System.out.println("Chon chuc nang: ");          
         System.out.println("1. Tim kiem theo slang word.");
@@ -61,6 +71,7 @@ public class dic {
         return option;
     }
 
+    // goi cac ham xu li chuc nang
     public boolean options(dic d, int select){
         switch(select) {
             case 1:
@@ -69,7 +80,7 @@ public class dic {
                 String s = d.findSlang(d);
                 if(s != null)
                     d.SaveHistory(s);
-                    
+                else System.out.println("Khong co slang word nay");
                 break;
             case 2:
                 d.clearScreen();
@@ -81,13 +92,15 @@ public class dic {
                 for (int i = 0; i < d.history.size(); i++){
                     System.out.println(d.history.get(i));
                 }
-              break;
+                break;
             case 4:
+                d.clearScreen();
+                d.addNewSlang();
                 break;
             case 5:
                 d.clearScreen();
                 d.editSlang();
-              break;
+                break;
             case 6:
                 d.clearScreen();
                 d.deleteSlang();
@@ -122,6 +135,8 @@ public class dic {
         else return false;
     }
 
+
+    //1. tim nghia slang word theo slang
     public String findSlang(dic d){
         Scanner input = new Scanner(System.in);
         String slang = input.nextLine().toLowerCase();
@@ -130,16 +145,19 @@ public class dic {
             System.out.println(meaning);
             return slang;
         }
-        else System.out.println("Khong co slang word nay");
+        
         return null;
     }
 
+
+    //3. lich su cua slang da tim kiem
     public void SaveHistory(String s){
         if (!this.history.contains(s))
             this.history.add(s.toUpperCase());
     }
 
 
+    //5. chinh sua slang word
     public void editSlang(){
         System.out.print("Nhap slang word can edit: ");
         String slang = this.findSlang(this);
@@ -197,6 +215,9 @@ public class dic {
         }
     }
 
+
+    //update lai du lieu file txt sau khi them/xoa/sua
+
     public void updateFileSlang(){
         try {
             FileWriter myWriter = new FileWriter("slang.txt");
@@ -206,21 +227,7 @@ public class dic {
             }
 
             myWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-
-    public void updateFileSlang2(){
-        try {
-            FileWriter myWriter = new FileWriter("slang_test.txt");
-
-            for (String i : this.dict_1.keySet()) {
-                myWriter.write(i.toLowerCase() + "`" + this.dict_1.get(i).toLowerCase() + "\n");
-            }
-
-            myWriter.close();
+    
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -228,6 +235,7 @@ public class dic {
     }
 
 
+    //xoa 1 slang word trong tu dien
     public void deleteSlang(){
         System.out.print("Nhap slang word can xoa: ");
         String slang = this.findSlang(this);
@@ -253,10 +261,12 @@ public class dic {
         }
     }
 
+
+    //7. reset slang word ve danh sach goc
     public void resetSlang(){
         this.dict_1.clear();
 
-        this.readFile("slang_original.txt");
+        this.readData("slang_original.txt");
 
         this.updateFileSlang();
 
@@ -264,6 +274,7 @@ public class dic {
     }
 
 
+    //8. random slang word
     public void randomSlang(){
         Random generator = new Random();
 
@@ -278,6 +289,7 @@ public class dic {
         System.out.println(randomValue.toUpperCase());
     }
 
+    //9. do vui theo slang/ theo meaning (n = 9: cau 9; n = 10: cau 10)
     public void challenge_1(int n){
         Random generator = new Random();
 
@@ -335,6 +347,7 @@ public class dic {
         else System.out.println("Thu lai nhe :((. Dap an la: " + value);
     }
 
+    //2. Tim theo nghia cua slang, in ra tat ca slang co key word nhap vao
     public void search_Definition(){
 
         Scanner input = new Scanner(System.in);
@@ -361,6 +374,8 @@ public class dic {
 
     }
 
+    //xoa man hinh cho ung dung de quan sat
+    //phan code tham khao
     public void clearScreen(){
         try {
             if (System.getProperty("os.name").contains("Windows"))
@@ -369,4 +384,59 @@ public class dic {
                 Runtime.getRuntime().exec("clear");
         } catch (IOException | InterruptedException ex) {}
     }
+    //phan code tham khao
+
+    //4. Them tu cho tu dien, neu tu da ton tai thi cho phep ghi de hoac duplicate.
+    public void addNewSlang(){
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Nhap slang can them: "); 
+        String slang = input.nextLine().toLowerCase();
+
+        System.out.print("Nhap meaning cho slang: "); 
+        String meaning = input.nextLine().toLowerCase();
+
+        if(this.dict_1.get(slang) == null){
+
+            this.dict_1.put(slang, meaning);
+            System.out.print("Da them slang thanh cong! ");
+            
+            //phan code tham khao
+            try { 
+                BufferedWriter out = new BufferedWriter(new FileWriter("slang.txt", true));               
+                out.write(slang + "`" + meaning + "\n"); 
+                out.close(); 
+            } 
+            catch (IOException e) { 
+                System.out.println("exception occoured" + e); 
+            } 
+            //phan code tham khao
+
+            input.nextLine();
+        }
+
+        else {
+            System.out.println("Slang da ton tai. Ban muon ghi de hay them meaning cho slang ?(0: Ghi de, 1: Them meaning)");
+            int option;
+            do {
+                System.out.print("Nhap lua chon: ");
+                option = input.nextInt();
+            } while (option < 0 || option > 1);
+
+            if (option == 1){
+                String add_meaning = this.dict_1.get(slang);
+                add_meaning += "/" + meaning;
+                this.dict_1.put(slang, add_meaning);
+                System.out.println("Them meaning thanh cong!");
+                this.updateFileSlang();
+            }
+
+            else {
+                this.dict_1.put(slang, meaning);
+                System.out.println("Da ghi de!");
+                this.updateFileSlang();
+            }
+        }
+    }
+
 }
